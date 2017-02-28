@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.teamup.mapper.MemberMapper">
+
+<select id="findMember" resultType="String">
+<![CDATA[
+	select email from member
+	where email=#{email} 
+ ]]>
+</select>
+
+<select id="findMember2" resultType="String">
+<![CDATA[
+	select password from member
+	where email=#{email} and password=#{password}
+ ]]>
+</select>
+
+
+
+<select id="memberList" resultType="org.teamup.domain.MemberVO">
+  <![CDATA[
+  select email, name, school, major from member
+  where memberId=#{memberId} 
+  ]]>
+  </select>
+  
+  
+  <insert id="insertMember" >
+  insert into member (memberId, email, name, password, school, major, status) values
+  (#{memberId}, #{email}, #{name}, #{password}, #{school}, #{major}, #{status})
+  </insert>
+
+  <update id="updateMember"> 
+  update member set name=#{name},school=#{school}, major=#{major}, status=#{status}
+  where memberId=#{memberId}
+  </update>
+  
+  <select id="findPasswd" resultType="String">
+  <![CDATA[
+  select password from member
+  where email=#{email}
+  ]]>
+  </select>
+    
+  <update id="changePasswd">
+  update member set password=#{password}
+  where memberId=#{memberId}
+  </update>
+  
+ 
+
+  <delete id="deleteMember">
+  delete from member
+  where memberId=#{memberId} 
+  </delete>
+  
+  <select id="findByEmail" resultType="org.teamup.domain.MemberVO" >
+  <![CDATA[
+  select * from member
+  where email=#{email}
+  ]]>
+  
+  </select>
+  
+  <select id="findByMemberId" resultType="org.teamup.domain.MemberVO" >
+  <![CDATA[
+  select * from member
+  where memberId=#{memberId}
+  ]]>
+  
+  </select>
+ 
+ <update id="fileUpload">
+ update member set portfolio = #{portfolio}
+ where memberId = #{memberId}
+ </update>
+ 
+ 
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.teamup.mapper.CategoryMapper">
+
+<insert id="insertCategory" >
+insert into category (categoryId, categoryName)
+values (#{categoryId}, #{categoryName})
+</insert>
+
+<select id="readCategory" resultType="org.teamup.domain.CategoryVO">
+ <![CDATA[
+  select * from category
+  where categoryId=#{categoryId} 
+  ]]>
+  </select>
+
+<update id="updateCategory" >
+ update category set categoryName=#{categoryName}
+  where categoryId=#{categoryId}
+</update>
+
+<select id="getCategoryName" resultType="String">
+<![CDATA[
+  select categoryName from category
+  where categoryId=#{categoryId} 
+  ]]>
+  </select>
+
+<delete id="deleteCategory" >
+delete from category
+where categoryId=#{categoryId}
+</delete>
+
+
+</mapper>

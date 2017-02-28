@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.teamup.mapper.PrizeMapper">
+
+ <insert id="insertPrize">
+insert into prize ( memberId, title, year )
+values ( #{memberId}, #{title}, #{year})
+ </insert>
+
+
+ <update id="updatePrize">
+  update prize set title=#{title}, year=#{year}
+  where prizeId=#{prizeId}
+  </update>
+  
+  <select id="readPrize" resultType="org.teamup.domain.PrizeVO" >
+  <![CDATA[
+  select prizeId, title, year from prize
+  where memberId=#{memberId} 
+  
+  ]]>
+  </select>
+  
+  <delete id="deletePrize">
+  delete from prize
+  where prizeId=#{prizeId}
+  
+  </delete>
+  
+</mapper>

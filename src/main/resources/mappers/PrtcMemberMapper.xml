@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.teamup.mapper.PrtcMemberMapper">
+
+<insert id="insertPrtcMember" >
+insert into prtcmember ( memberId, boardId ) values
+  (#{memberId}, #{boardId})
+
+</insert>
+
+<select id="check" resultType="org.teamup.domain.PrtcMember">
+	select prtcMemberId, memberId, boardId from prtcmember
+	 where memberId = #{memberId} and boardId = #{boardId}
+</select>
+
+<select id="readPrtcMember" resultType="org.teamup.domain.BoardVO" >
+<![CDATA[
+  select prtcmember.boardId, title, date, memCount, dueDate, curCount from prtcmember, board
+  where prtcMember.boardId = board.boardId and prtcmember.memberId=#{memberId}
+  ]]>
+  </select>
+
+<update id="updatePrtcMember"> 
+  update prtcmember set memberId=#{memberId}, boardId=#{boardId} 
+  where prtcMemberId=#{prtcMemberId}
+  </update>
+  
+ <delete id="deletePrtcMember">
+  delete from prtcmember
+  where boardId = #{boardId} and memberId=#{memberId}
+ </delete>
+ 
+ <delete id="deleteByBoardId" >
+ delete from prtcmember
+ where boardId = #{boardId}
+ </delete>
+</mapper>
