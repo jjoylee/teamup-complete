@@ -14,23 +14,13 @@ import org.teamup.service.PrtcMemberService;
 
 @Controller
 @RequestMapping("/board")
-public class PrtcMemberController {
-	
+public class PrtcMemberController extends BaseController{
+
 	private static final Logger logger = LoggerFactory.getLogger(PrtcMemberController.class);
-
-
-	@Inject
-	private PrtcMemberService service;
 	
 	@RequestMapping(value = "/myParticipation", method = RequestMethod.GET)
 	public void myParticipation(Model model, HttpSession session) throws Exception{
-		
-		MemberVO vo = (MemberVO)session.getAttribute("member");
-		int memberId = vo.getMemberId();
-		
-		model.addAttribute("list", service.readPrtcMember(memberId));
-		logger.info("Welcome myParticipation.");
-		
-	}
-	
+		logger.info("myParticipation - GET");
+		model.addAttribute("list", prtcMemberService.readPrtcMember(((MemberVO)session.getAttribute("member")).getMemberId()));
+	}	
 }

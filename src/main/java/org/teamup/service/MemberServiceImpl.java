@@ -16,7 +16,6 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public String findMember(MemberVO member) throws Exception {
-				
 		if(dao.findMember(member) == "none")
 			return "none";
 		else if(dao.findMember(member) == "failed")
@@ -32,8 +31,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberVO read(Integer memberId) throws Exception {
-		
-		return null;
+		return dao.findByMemberId(memberId);
 	}
 
 	@Override
@@ -48,39 +46,27 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public List<MemberVO> selectMember() throws Exception {
-		// TODO Auto-generated method stub
 		return dao.memberList();
 	}
 
 	@Override
-	public String findPasswd(MemberVO member) throws Exception {
-		
-		return dao.findPasswd(member);
+	public String findPasswdByEmail(MemberVO member) throws Exception {	
+		return dao.findPasswdByEmail(member);
 	}
 
 	@Override
 	public void changePasswd(MemberVO member) throws Exception {
 		dao.changePasswd(member);
-		
 	}
 
 	@Override
 	public List<MemberVO> prizeList() throws Exception {
-		
 		return dao.prizeList();
 	}
-
 	
 	@Override
-	public List<MemberVO> findByEmail(String email) throws Exception {
-		// TODO Auto-generated method stub
+	public MemberVO findByEmail(String email) throws Exception {
 		return dao.findByEmail(email);
-	}
-	
-	@Override
-	public MemberVO login(MemberVO vo) throws Exception {
-		// TODO Auto-generated method stubs
-		return dao.login(vo);
 	}
 
 	@Override
@@ -90,7 +76,6 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberVO findByMemberId(int memberId) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.findByMemberId(memberId);
 	}
 }

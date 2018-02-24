@@ -21,15 +21,13 @@ public interface MemberService {
 	
 	public List<MemberVO> selectMember() throws Exception;
 	
-	public String findPasswd(MemberVO member) throws Exception;
+	public String findPasswdByEmail(MemberVO member) throws Exception;
 	
 	public void changePasswd(MemberVO member) throws Exception;
 	
 	public List<MemberVO> prizeList() throws Exception;
 	
-	public List<MemberVO> findByEmail(String email)throws Exception;
-	
-	public MemberVO login(MemberVO vo) throws Exception;
+	public MemberVO findByEmail(String email)throws Exception;
 	
 	public void fileUpload(MemberVO vo) throws Exception;
 	

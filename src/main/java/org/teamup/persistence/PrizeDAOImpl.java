@@ -22,18 +22,16 @@ public class PrizeDAOImpl implements PrizeDAO{
 
 	@Override
 	public List<PrizeVO> readPrize(Integer memberId) throws Exception {
-		return  session.selectList(namespace + ".readPrize", memberId);
+		return session.selectList(namespace + ".readPrize", memberId);
 	}
 
 	@Override
 	public void updatePrize(PrizeVO vo) throws Exception {
 		session.update(namespace + ".updatePrize", vo); 
-		
 	}
 
 	@Override
 	public void deletePrize(Integer prizeId) throws Exception {
 		session.delete(namespace + ".deletePrize", prizeId); 
-		
 	}
 }

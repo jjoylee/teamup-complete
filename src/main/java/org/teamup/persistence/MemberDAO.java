@@ -9,7 +9,6 @@ public interface MemberDAO {
 
 	public String findMember(MemberVO vo);
 	
-
 	public void insertMember(MemberVO vo);
 	
 	public void updateMember(MemberVO vo);
@@ -20,17 +19,15 @@ public interface MemberDAO {
 	
 	public void deleteMember(MemberVO vo);
 	
-	public String findPasswd(MemberVO vo);
+	public String findPasswdByEmail(MemberVO vo);
 	
 	public List<MemberVO> memberList() throws Exception;
 	
 	public List<MemberVO> prizeList() throws Exception;
 	
-	public List<MemberVO> findByEmail(String email)throws Exception;
+	public MemberVO findByEmail(String email)throws Exception;
 	
 	public MemberVO findByMemberId(int memberId)throws Exception;
-	
-	public MemberVO login(MemberVO vo) throws Exception;
 	
 	public void fileUpload(MemberVO vo) throws Exception;
 	

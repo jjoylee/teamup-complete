@@ -48,29 +48,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/account/*")
-public class UploadController {
+public class UploadController extends BaseController{
 
-	private static final Logger logger = 
-			LoggerFactory.getLogger(UploadController.class);
-	
-	@Inject
-	private MemberService service;
+	private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 	
 	@RequestMapping(value = "/uploadForm" , method = RequestMethod.GET)
-	public void uploadForm(){
-		
+	public void uploadForm(HttpSession session){
+		logger.info("uploadForm - GET");
+		String[] file = getUser(session).getPortfolio().split("_");
+		System.out.println(file[file.length-1]);
 	}
 	
 	@RequestMapping(value = "/uploadForm" , method = RequestMethod.POST)
 	public String uploadForm(MultipartFile file, Model model, HttpSession session) throws Exception{
-		
-		logger.info("size: " + file.getSize());
+		logger.info("uploadForm - POST");
+		if(getUser(session).getPortfolio() != null){
+			File uploaded = new File("E:\\upload\\" + getUser(session).getPortfolio());
+			uploaded.delete();
+		}
 		String savedName = uploadFile(file.getOriginalFilename(), file.getBytes());
-		
 		MemberVO vo = new MemberVO();
 		vo.setPortfolio(savedName);
-		vo.setMemberId(((MemberVO)session.getAttribute("member")).getMemberId());
-		service.fileUpload(vo);
+		vo.setMemberId(getUser(session).getMemberId());
+		memberService.fileUpload(vo);
 		model.addAttribute("savedName", savedName);
 		return "/account/uploadResult";
 	}
@@ -80,16 +80,9 @@ public class UploadController {
 	
 	private String uploadFile(String originalName, byte[] fileData ) throws Exception{
 		UUID uid = UUID.randomUUID();
-		
 		String savedName = uid.toString() + "_"+originalName;
-		
 		File target = new File(uploadPath, savedName);
-		
 		FileCopyUtils.copy(fileData, target);
-		
 		return savedName;
 	}
-	
-	
-
 }

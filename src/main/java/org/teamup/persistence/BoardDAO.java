@@ -13,9 +13,9 @@ public interface BoardDAO {
 	public List<BoardVO> listCriteria(Criteria cri) throws Exception;
 	public int countPaging(Criteria cri)throws Exception;
 	public List<BoardVO> listCategory(Integer categoryId) throws Exception;
-	public void curCount(Integer boardId) throws Exception;
-	public void curCount2(Integer boardId) throws Exception;
-	public List<BoardVO> findByMemId(Integer memberId) throws Exception;
+	public void addCount(Integer boardId) throws Exception;
+	public void minusCount(Integer boardId) throws Exception;
+	public List<BoardVO> findByMemberId(Integer memberId) throws Exception;
     public List<MemberVO> memberList(Integer boardId) throws Exception;
     public List<BoardVO> listSearch(SearchCriteria cri) throws Exception;
     public int listSearchCount(SearchCriteria cri) throws Exception;

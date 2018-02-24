@@ -7,7 +7,7 @@
 <head>
 <link rel="stylesheet" href="../resources/pureForm/pure-min.css">
 <link rel="stylesheet" href="../resources/pureForm/side-menu.css">
-
+<link rel="stylesheet" href="../resources/pureForm/bootstrap.css">
 <style>
 .custom-restricted-width {
     /* To limit the menu width to the content of the menu: */
@@ -16,7 +16,13 @@
      width: 12em; 
 }
 
-
+#content{
+		margin-top:4%;
+		float:right;
+		position:absolute;
+		margin-left:20%;
+}
+		
 .dropbtn {
     background-color: #4CAF50;
     color: white;
@@ -65,35 +71,23 @@
   
 <div class="pure-menu custom-restricted-width">
     <span class="pure-menu-heading">Team UP</span>
-
     <ul class="pure-menu-list">
         <li class="pure-menu-item"><a href="/board/itList" class="pure-menu-link">IT</a></li>
         <li class="pure-menu-item"><a href="/board/marketingList" class="pure-menu-link">마케팅</a></li>
         <li class="pure-menu-item"><a href="/board/designList" class="pure-menu-link">디자인</a></li>
         <li class="pure-menu-item"><a href="/board/etcList" class="pure-menu-link">기타</a></li>
-        
+
         <div class="dropdown">
-        <li class="pure-menu-item"><a href="#" class="pure-menu-link"  >나의 계정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼</a></li>
- 		<div class="dropdown-content">
- 		<li class="pure-menu-item"><a href="/board/myWriting" class="pure-menu-link">내가 쓴 게시글</a></li>
- 		<li class="pure-menu-item"><a href="/board/myParticipation" class="pure-menu-link">내가 참가한 글</a></li> 		
-        <li class="pure-menu-item"><a href="/account/modifyInfo" class="pure-menu-link">프로필</a></li>        
-       </div>
-       </div>
-                
-            </ul>
-        </li>
-        
-        
-        <li class="pure-menu-item" id="logout"><a href="#" class="pure-menu-link">로그아웃</a></li>
-        
-       
-        
-        
+        	<li class="pure-menu-item"><a href="#" class="pure-menu-link"  >나의 계정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼</a></li>
+ 			<div class="dropdown-content">
+ 				<li class="pure-menu-item"><a href="/board/myWriting" class="pure-menu-link">내가 쓴 게시글</a></li>
+ 				<li class="pure-menu-item"><a href="/board/myParticipation" class="pure-menu-link">내가 참가한 글</a></li> 		
+        		<li class="pure-menu-item"><a href="/account/modifyInfo" class="pure-menu-link">프로필</a></li>        
+       		</div>
+       </div>    
+       <li class="pure-menu-item" id="logout"><a href="#" class="pure-menu-link">로그아웃</a></li>
     </ul>
 </div>
-
-	
 </body>
 
 <script src="../resources/js/jquery-1.10.2.min.js"></script>

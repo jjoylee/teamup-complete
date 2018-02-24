@@ -15,13 +15,11 @@ public class CategoryDAOImpl implements CategoryDAO{
 
 	@Override
 	public void insertCategory(CategoryVO vo) throws Exception {
-		
 		session.insert(namespace + ".insertCategory", vo);
 	}
 
 	@Override
 	public CategoryVO readCategory(Integer categoryId) throws Exception {
-		
 		return session.selectOne(namespace + ".readCategory", categoryId);
 	}
 
@@ -33,12 +31,10 @@ public class CategoryDAOImpl implements CategoryDAO{
 	@Override
 	public void deleteCategory(Integer categoryId) throws Exception {
 		session.delete(namespace + ".deleteCategory", categoryId);
-		
 	}
 
 	@Override
 	public String getCategoryName(Integer categoryId) throws Exception {
-		
 		return session.selectOne(namespace + ".getCategoryName", categoryId) ;
 	}
 }

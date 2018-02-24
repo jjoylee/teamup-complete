@@ -39,16 +39,12 @@ public class PrtcMemberServiceImpl implements PrtcMemberService {
 	}
 
 	@Override
-	public PrtcMember check(PrtcMember pm) throws Exception {
-		// TODO Auto-generated method stub
-		return dao.check(pm);
+	public PrtcMember checkPrtcMember(PrtcMember pm) throws Exception {
+		return dao.checkPrtcMember(pm);
 	}
-
+	
 	@Override
 	public void deleteByBoardId(Integer boardId) throws Exception {
-		dao.deleteByBoardId(boardId);
-		
-	}
-	
-	
+		dao.deleteByBoardId(boardId);	
+	}	
 }

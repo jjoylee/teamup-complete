@@ -35,5 +35,4 @@ public class CategoryServiceImpl implements CategoryService{
 	public String getCategoryName(Integer categoryId) throws Exception {
 		return dao.getCategoryName(categoryId);
 	}
-
 }

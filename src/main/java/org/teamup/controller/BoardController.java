@@ -21,13 +21,17 @@ import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.teamup.domain.BoardVO;
 import org.teamup.domain.Criteria;
+import org.teamup.domain.JsonResponse;
 import org.teamup.domain.MemberVO;
 import org.teamup.domain.PageMaker;
 import org.teamup.domain.PrtcMember;
@@ -39,228 +43,178 @@ import org.teamup.service.PrtcMemberService;
 
 @Controller
 @RequestMapping("/board")
-public class BoardController {
+public class BoardController extends BaseController{
 
-private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	
-	@Inject
-	private BoardService service;
-	
-	@Inject
-	private PrtcMemberService service2;
-	
-	@Inject
-	  private PrizeService service3;
-	
-	@Inject
-	private MemberService service4;
-
-	@RequestMapping(value = "/etcList", method = RequestMethod.GET)
-	public void etcList(Model model,  @ModelAttribute("cri") SearchCriteria cri) throws Exception{
-		logger.info("Welcome etcList.");
-		
-		cri.setCategoryId(4);
-		model.addAttribute("list", service.listSearchCriteria(cri));		
-		
+	private void setList(Model model, SearchCriteria cri, int categoryId) throws Exception{
+		cri.setCategoryId(categoryId);
+		model.addAttribute("list", boardService.listSearchCriteria(cri));		
 	    PageMaker pageMaker = new PageMaker();
 	    pageMaker.setCri(cri);
-	    
-	    pageMaker.setTotalCount(service.listSearchCount(cri));
-
-	    model.addAttribute("pageMaker", pageMaker);		
-
-	    
+	    pageMaker.setTotalCount(boardService.listSearchCount(cri));
+	    model.addAttribute("pageMaker", pageMaker);	
 	}
-		
-		 	
-	
-	@RequestMapping(value = "/designList", method = RequestMethod.GET)
-	public void	designList(Model model, @ModelAttribute("cri") SearchCriteria cri) throws Exception {
-		logger.info("Welcome designList.");
-		
-		cri.setCategoryId(3);
-		model.addAttribute("list", service.listSearchCriteria(cri));		
-		
-	    PageMaker pageMaker = new PageMaker();
-	    pageMaker.setCri(cri);
-	    
-	    pageMaker.setTotalCount(service.listSearchCount(cri));
 
-	    model.addAttribute("pageMaker", pageMaker);
-
-
-		
-	}
-	
-	
 	@RequestMapping(value = "/itList", method = RequestMethod.GET)
 	public void itList(Model model, @ModelAttribute("cri") SearchCriteria cri) throws Exception{
-		logger.info("Welcome itList.");
-		
-		cri.setCategoryId(1);
-		model.addAttribute("list", service.listSearchCriteria(cri));		
-		
-	    PageMaker pageMaker = new PageMaker();
-	    pageMaker.setCri(cri);
-	    
-	    pageMaker.setTotalCount(service.listSearchCount(cri));
-
-	    model.addAttribute("pageMaker", pageMaker);
-		
+		logger.info("itList - GET");
+		setList(model, cri, 1);	 
 	}
 	
 	@RequestMapping(value = "/marketingList", method = RequestMethod.GET)
 	public void marketingList(Model model, @ModelAttribute("cri") SearchCriteria cri) throws Exception {
-		logger.info("Welcome marketingList");
-		
-		
-		cri.setCategoryId(2);
-		model.addAttribute("list", service.listSearchCriteria(cri));		
-		
-	    PageMaker pageMaker = new PageMaker();
-	    pageMaker.setCri(cri);
-	    
-	    pageMaker.setTotalCount(service.listSearchCount(cri));
-
-	    model.addAttribute("pageMaker", pageMaker);
-
+		logger.info("marketingList - GET");
+		setList(model, cri, 2);	 
 	}
 	
+	@RequestMapping(value = "/designList",method = RequestMethod.GET)
+	public void	designList(Model model, @ModelAttribute("cri") SearchCriteria cri) throws Exception {
+		logger.info("designList-GET.");
+		setList(model, cri, 3);	 
+	}
 	
-	
+	@RequestMapping(value = "/etcList", method = RequestMethod.GET)
+	public void etcList(Model model,  @ModelAttribute("cri") SearchCriteria cri) throws Exception{
+		logger.info("ectList-GET");
+		setList(model, cri, 4);	    
+	}
 	
 	@RequestMapping(value = "/readWrite", method = RequestMethod.GET)
-	public void readWrite(Model model, @RequestParam("boardId") Integer boardId, HttpSession session) throws Exception {
+	public void readWrite(Model model, @RequestParam int boardId, HttpSession session) throws Exception {
+		logger.info("readWrite - GET");	
 		
-		MemberVO vo = (MemberVO)session.getAttribute("member");
-		model.addAttribute("sessionid", vo.getMemberId());
-		logger.info("Welcome readWrite.");		
-		model.addAttribute("board",service.read(boardId));
-		
+		model.addAttribute("sessionid", getUser(session).getMemberId());	
+		model.addAttribute("board",boardService.read(boardId));
 		PrtcMember pm = new PrtcMember();
-		pm.setMemberId(((MemberVO)session.getAttribute("member")).getMemberId());
+		pm.setMemberId(getUser(session).getMemberId());
 		pm.setBoardId(boardId);
-		if(service2.check(pm) == null)
-		{
-			model.addAttribute("check", "in");
-		}
-		else model.addAttribute("check", "alreadyin");
+		if(prtcMemberService.checkPrtcMember(pm) == null) model.addAttribute("msg", "success");
+		else model.addAttribute("msg", "alreadyin");
 	}
-	
-	@RequestMapping(value= "/readWrite", method = RequestMethod.POST)
-	public String readWritePOST(Model model, @RequestParam("boardId") Integer boardId ){
-		
-		
-		return "redirect:/board/updateWrite";
-	}
-	
 	
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public void writet(Model model) {
-		logger.info("Welcome write.");		
+	public void write(Model model) {
+		logger.info("write - GET");		
 	}
 	
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String writePost(Model model, @RequestParam("categoryId") int categoryId,BoardVO vo, HttpSession session) throws Exception{
-		logger.info("Welcome write.");
-		MemberVO member = (MemberVO)session.getAttribute("member");
-		vo.setMemberId(member.getMemberId());
-		service.insert(vo);
-		if(categoryId == 1) return "redirect:/board/itList";
-		else if(categoryId == 2)return "redirect:/board/marketingList";
-		else if(categoryId == 3)return "redirect:/board/designList";
-		else return "redirect:/board/etcList";
-		
+	public @ResponseBody JsonResponse write(BoardVO vo, HttpSession session) throws Exception{
+		logger.info("write - POST");
+		res= new JsonResponse();
+		try{
+			vo.setMemberId(getUser(session).getMemberId());
+			boardService.insert(vo);
+			res.setResult("success");
+			return res;
+		}
+		catch(Exception e){
+			res.setResults("fail", e.getMessage());
+			return res;
+		}
 	}
 	
-	
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public void test(Model model, HttpSession session)throws Exception { 
-		logger.info("Welcome write.");
-		
-		 if(session.getAttribute("member")==null)
-			 System.out.println("no session");
-		 else
-			 System.out.println("session");
-
-	}
+//	@RequestMapping(value = "/test", method = RequestMethod.GET)
+//	public void test(Model model, HttpSession session)throws Exception { 
+//		logger.info("Welcome write.");
+//		
+//		 if(session.getAttribute("member")==null)
+//			 System.out.println("no session");
+//		 else
+//			 System.out.println("session");
+//
+//	}
 	
 	@RequestMapping(value = "/updateWrite", method = RequestMethod.GET)
-	public void updateWrite(Model model, int boardId) throws Exception{
-		logger.info("Welcome updateWrite.");
-	
-		model.addAttribute(service.read(boardId));
-			}
+	public void updateWrite(Model model, @RequestParam int boardId) throws Exception{
+		logger.info("updateWrite - GET");
+		model.addAttribute(boardService.read(boardId));
+	}
 	
 	@RequestMapping(value = "/updateWrite", method = RequestMethod.POST)
-	public String updateWritePOST(Model model,  BoardVO vo) throws Exception{
-		logger.info("Welcome updateWrite.");
-	   
-		service.update(vo);
-		return "redirect:/board/itList";
+	public @ResponseBody JsonResponse updateWrite(Model model, BoardVO vo) throws Exception{
+		logger.info("updateWrite - POST");
+		res = new JsonResponse();
+		try{
+			boardService.update(vo);
+			res.setResult("success");
+			return res;
+		}catch(Exception e){
+			res.setResults("fail", e.getMessage());
+			return res;
+		}
 	}
 	
-
-	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String delete(@RequestParam("boardId") int boardId) throws Exception{
-		logger.info("Welcome updateWrite.");
-	
-		service2.deleteByBoardId(boardId);
-		service.delete(boardId);
-		return "redirect:/board/itList";
+	@RequestMapping(value = "/delete/{boardId}")
+	public @ResponseBody JsonResponse delete(@PathVariable("boardId") int boardId) throws Exception{
+		logger.info("delete - POST");
+		res = new JsonResponse();
+		try{
+			prtcMemberService.deleteByBoardId(boardId);
+			boardService.delete(boardId);
+			res.setResult("success");
+			return res;
+		}catch(Exception e){
+			res.setResults("fail", e.getMessage());
+			return res;
+		}
 	}
 	
-	@RequestMapping(value = "/participate", method = RequestMethod.POST)
-	public String participate(@RequestParam("boardId") int boardId, HttpSession session, RedirectAttributes rttr) throws Exception{
-		logger.info("Welcome updateWrite.");
-		PrtcMember pm = new PrtcMember();
-		pm.setMemberId(((MemberVO)session.getAttribute("member")).getMemberId());
-		pm.setBoardId(boardId);
-		service.curCount(boardId);
-		service2.insertPrtcMember(pm);
-		return "redirect:/board/readWrite?boardId=" + boardId;
+	@RequestMapping(value = "/participate/{boardId}")
+	public @ResponseBody JsonResponse participate(@PathVariable("boardId") int boardId, HttpSession session) throws Exception{
+		logger.info("participate");
+		res = new JsonResponse();
+		try{
+			PrtcMember pm = new PrtcMember();
+			pm.setMemberId(getUser(session).getMemberId());
+			pm.setBoardId(boardId);
+			boardService.addCount(boardId);
+			prtcMemberService.insertPrtcMember(pm);
+			res.setResult("success");
+			return res;
+		}catch(Exception e){
+			res.setResults("fail", e.getMessage());
+			return res;
+		}
 	}
 	
-
-	@RequestMapping(value = "/participate_out", method = RequestMethod.POST)
-	public String participate_out(@RequestParam("boardId") int boardId, HttpSession session, RedirectAttributes rttr) throws Exception{
-		logger.info("Welcome updateWrite.");
-		PrtcMember pm = new PrtcMember();
-		pm.setMemberId(((MemberVO)session.getAttribute("member")).getMemberId());
-		pm.setBoardId(boardId);
-		service.curCount2(boardId);
-		service2.deletePrtcMember(pm);
-		return "redirect:/board/readWrite?boardId=" + boardId;
+	@RequestMapping(value = "/participate_out/{boardId}")
+	public @ResponseBody JsonResponse participate_out(@PathVariable("boardId") int boardId, HttpSession session) throws Exception{
+		logger.info("participate_out - POST");
+		try{
+			res = new JsonResponse();
+			PrtcMember pm = new PrtcMember();
+			pm.setMemberId(getUser(session).getMemberId());
+			pm.setBoardId(boardId);
+			boardService.minusCount(boardId);
+			prtcMemberService.deletePrtcMember(pm);			
+			res.setResult("success");
+			return res;
+		}catch(Exception e){
+			res.setResults("fail", e.getMessage());
+			return res;
+		}
 	}
 	
 	@RequestMapping(value = "/myWriting", method = RequestMethod.GET)
 	public void myWriting(Model model, HttpSession session) throws Exception {
-		logger.info("Welcome myWriting.");
-		
-		MemberVO vo = (MemberVO)session.getAttribute("member");
-		int memberId = vo.getMemberId();
-		model.addAttribute("list", service.findByMemId(memberId));
+		logger.info("myWriting - GET");
+		model.addAttribute("list", boardService.findByMemId(getUser(session).getMemberId()));
 	}
 	
 	@RequestMapping(value = "/memberList", method = RequestMethod.GET)
 	public void memberList(Model model,@RequestParam("boardId") int boardId) throws Exception {
-		logger.info("Welcome myWriting.");
-		model.addAttribute("list", service.memberList(boardId));
+		logger.info("memberList - GET");
+		model.addAttribute("list", boardService.memberList(boardId));
 	}
 	
 	@RequestMapping(value = "/readMember", method = RequestMethod.GET)
-	public void myWriting(Model model, @RequestParam("memberId") int memberId) throws Exception {
-		logger.info("Welcome myWriting.");
-		model.addAttribute("list",  service3.readPrize(memberId)); 
-		model.addAttribute(service4.findByMemberId(memberId));
-		String url = "D:\\upload\\" + service4.findByMemberId(memberId).getPortfolio();
+	public void readMember(Model model, @RequestParam("memberId") int memberId) throws Exception {
+		logger.info("readMember - GET");
+		model.addAttribute("list",  prizeService.readPrize(memberId)); 
+		model.addAttribute(memberService.findByMemberId(memberId));
+		String url = "D:\\upload\\" + memberService.findByMemberId(memberId).getPortfolio();
 		model.addAttribute("url", url);
 	}
-	
-	
-	
+
 }

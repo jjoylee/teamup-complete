@@ -34,7 +34,7 @@ public class MemberDAOTest {
 		vo.setMemberId(1);
 		vo.setUrl("http://naver.com");
 		vo.setMemCount(3);
-		vo.setdueDate("2016-04-19");
+		vo.setDueDate("2016-04-19");
 
 
 		

@@ -36,13 +36,12 @@ public class PrtcMemberDAOImpl implements PrtcMemberDAO{
 	}
 
 	@Override
-	public PrtcMember check(PrtcMember pm) throws Exception {
-		return session.selectOne(namespace + ".check", pm);
+	public PrtcMember checkPrtcMember(PrtcMember pm) throws Exception {
+		return session.selectOne(namespace + ".checkPrtcMember", pm);
 	}
 	
 	@Override
 	public void deleteByBoardId(Integer boardId) throws Exception{
 		session.delete(namespace+".deleteByBoardId", boardId);
 	}
-
 }

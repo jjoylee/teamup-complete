@@ -11,8 +11,7 @@ import org.teamup.domain.SearchCriteria;
 
 @Service
 public interface BoardService {
-
-		
+	
 	public void insert(BoardVO vo) throws Exception;
 	
     public BoardVO read(Integer bno) throws Exception;
@@ -25,19 +24,17 @@ public interface BoardService {
 
     public List<BoardVO> listPage(int page) throws Exception;
 
-   public List<BoardVO> listCriteria(Criteria cri) throws Exception;
+    public List<BoardVO> listCriteria(Criteria cri) throws Exception;
 
     public int countPaging(Criteria cri) throws Exception;
     
     public List<BoardVO> listCategory(Integer categoryId) throws Exception;
     
-    
     public int listCountCriteria(Criteria cri) throws Exception;
 
+    public void addCount(Integer boardId) throws Exception;
     
-    public void curCount(Integer boardId) throws Exception;
-    
-    public void curCount2(Integer boardId) throws Exception;
+    public void minusCount(Integer boardId) throws Exception;
     
     public List<BoardVO> findByMemId(Integer memberId) throws Exception;
     

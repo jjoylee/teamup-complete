@@ -16,25 +16,20 @@ import org.teamup.service.MemberService;
 
 @Controller
 @RequestMapping("/account/*")
-public class DownloadController {
-
-	
-	@Inject
-	private MemberService service;
+public class DownloadController extends BaseController{
 	
 	@RequestMapping(value="/download")
 	public void downloadFile(HttpServletResponse response,@RequestParam("memberId") int memberId) throws Exception{
-
-	MemberVO vo = service.findByMemberId(memberId);
-	byte fileByte[] = FileUtils.readFileToByteArray(new File("D:\\upload\\"+ vo.getPortfolio()));
-    
-    response.setContentType("application/octet-stream");
-    response.setContentLength(fileByte.length);
-    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(vo.getPortfolio(),"UTF-8")+"\";");
-    response.setHeader("Content-Transfer-Encoding", "binary");
-    response.getOutputStream().write(fileByte);
-     
-    response.getOutputStream().flush();
-    response.getOutputStream().close();
+		MemberVO vo = memberService.findByMemberId(memberId);
+		byte fileByte[] = FileUtils.readFileToByteArray(new File("E:\\upload\\"+ vo.getPortfolio()));
+	    
+	    response.setContentType("application/octet-stream");
+	    response.setContentLength(fileByte.length);
+	    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(vo.getPortfolio(),"UTF-8")+"\";");
+	    response.setHeader("Content-Transfer-Encoding", "binary");
+	    response.getOutputStream().write(fileByte);
+	     
+	    response.getOutputStream().flush();
+	    response.getOutputStream().close();
 	}
 }
