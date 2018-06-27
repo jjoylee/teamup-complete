@@ -16,8 +16,10 @@
 
 	<select id="readPrtcMember" resultType="org.teamup.domain.BoardVO">
 	<![CDATA[
-	  select prtcmember.boardId, title, date, memCount, dueDate, curCount from prtcmember, board
-	  where prtcMember.boardId = board.boardId and prtcmember.memberId=#{memberId}
+	  select prtcmember.boardId, title, date, memCount, dueDate, curCount 
+	  from prtcmember 
+	  inner join board on prtcMember.boardId = board.boardId 
+	  where prtcmember.memberId=#{memberId}
 	  ]]>
 	</select>
 

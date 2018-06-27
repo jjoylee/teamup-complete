@@ -7,9 +7,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="readBoard" resultType="org.teamup.domain.BoardVO">
 		select boardId, member.name as name, title, date, memCount, dueDate,
-		content, curCount, url, categoryId, board.memberId as memberId from
-		board, member
-		where boardId=${value} and member.memberId = board.memberId
+		content, curCount, url, categoryId, board.memberId as memberId 
+		from board inner join member
+		on member.memberId = board.memberId
+		where boardId=${boardId} 
 	</select>
 
 	<insert id="insertBoard">
@@ -33,8 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="findByMemberId" resultType="org.teamup.domain.BoardVO">
 		select boardId, title, date, memCount, curCount, dueDate, member.memberId as
-		memberId from board, member
-		where member.memberId = board.memberId and board.memberId=#{memberId}
+		memberId from board
+		inner join member on member.memberId = board.memberId 
+		where board.memberId=#{memberId}
 	</select>
 
 	<select id="listAll" resultType="org.teamup.domain.BoardVO">
@@ -46,18 +48,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="listCategory" resultType="org.teamup.domain.BoardVO">
 	<![CDATA[
-	select boardId, member.name as name, title, date, memCount, dueDate, content, curCount, url from board, member 
-	where categoryId = #{categoryId} and member.memberId = board.memberId
-    order by boardId desc, date desc
+	select boardId, member.name as name, title, date, memCount, dueDate, content, curCount, url 
+	from board inner join member 
+	on member.memberId = board.memberId
+	where categoryId = #{categoryId} order by boardId desc, date desc
 	]]>
 	</select>
 
 	<select id="listCriteria" resultType="org.teamup.domain.BoardVO">
 	<![CDATA[
-	 select boardId, member.name as name, title, date, memCount, dueDate, content, curCount, url from board, member 
-	where categoryId = #{categoryId} and member.memberId = board.memberId
-    order by boardId desc, date desc
-	limit #{pageStart}, #{perPageNum} ]]>
+	 select boardId, member.name as name, title, date, memCount, dueDate, content, curCount, url 
+	 from board inner join member on member.memberId = board.memberId
+	 where categoryId = #{categoryId}
+	 order by boardId desc, date desc
+	 limit #{pageStart}, #{perPageNum} ]]>
 	</select>
 
 	<select id="countPaging" resultType="int">
@@ -78,8 +82,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="memberList" resultType="org.teamup.domain.MemberVO">
 	<![CDATA[
-	select member.memberId as memberId, prtcmember.boardId as boardId, member.name as name , member.email as email from member, board, prtcmember 
-	where board.boardId = #{boardId} and board.boardId = prtcmember.boardId and prtcmember.memberId = member.memberId]]>
+	select member.memberId as memberId, prtcmember.boardId as boardId, member.name as name , member.email as email 
+	from board inner join prtcmember on board.boardId = prtcmember.boardId
+	inner join member on prtcmember.memberId = member.memberId
+	where board.boardId = #{boardId}]]>
 	</select>
 	
 	<sql id="search">
@@ -92,8 +98,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="listSearch" resultType="org.teamup.domain.BoardVO">
 	<![CDATA[  
-	  select boardId, member.name as name, title, date, memCount, dueDate, content, curCount, url from board, member 
-		where categoryId = #{categoryId} and member.memberId = board.memberId
+	  select boardId, member.name as name, title, date, memCount, dueDate, content, curCount, url from 
+	  board inner join member on member.memberId = board.memberId
+	  where categoryId = #{categoryId} 
 	]]>
 	<include refid="search"></include>
 
