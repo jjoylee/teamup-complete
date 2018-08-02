@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		content, curCount, url, categoryId, board.memberId as memberId 
 		from board inner join member
 		on member.memberId = board.memberId
-		where boardId=${boardId} 
+		where boardId=#{boardId} 
 	</select>
 
 	<insert id="insertBoard">

@@ -83,7 +83,6 @@ public class BoardController extends BaseController{
 	@RequestMapping(value = "/readWrite", method = RequestMethod.GET)
 	public void readWrite(Model model, @RequestParam int boardId, HttpSession session) throws Exception {
 		logger.info("readWrite - GET");	
-		
 		model.addAttribute("sessionid", getUser(session).getMemberId());	
 		model.addAttribute("board",boardService.read(boardId));
 		PrtcMember pm = new PrtcMember();

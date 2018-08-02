@@ -14,7 +14,7 @@ public interface BoardService {
 	
 	public void insert(BoardVO vo) throws Exception;
 	
-    public BoardVO read(Integer bno) throws Exception;
+    public BoardVO read(Integer boardId) throws Exception;
 
     public void update(BoardVO vo) throws Exception;
 
